@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego Educativo de Preguntas y Respuestas - Grupo Pixies</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .university-logo {
+            color: #2c3e50;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .project-title {
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .team-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .team-members {
+            text-align: left;
+        }
+
+        .team-members h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .member {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .course-info {
+            text-align: left;
+        }
+
+        .course-info h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .course-detail {
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #2c3e50;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-btn:hover, .nav-btn.active {
+            background: #2c3e50;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .content-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .subsection {
+            margin-bottom: 30px;
+        }
+
+        .subsection h3 {
+            font-size: 1.3rem;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            background: #f8f9fa;
+            padding: 10px 15px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .ideas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .idea-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #764ba2;
+            transition: transform 0.3s ease;
+        }
+
+        .idea-item:hover {
+            transform: translateX(5px);
+        }
+
+        .selected-idea {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+
+        .justification-pillars {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .pillar {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            border-top: 4px solid #667eea;
+        }
+
+        .pillar h4 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .feature {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 4px solid #764ba2;
+        }
+
+        .feature h4 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .tech-specs {
+            background: #2c3e50;
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+
+        .tech-specs h4 {
+            color: #67eea;
+            margin-bottom: 15px;
+        }
+
+        .tools-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .tool-tag {
+            background: rgba(102, 126, 234, 0.2);
+            color: #2c3e50;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .feedback-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 20px 0;
+        }
+
+        .positive-feedback, .improvement-areas {
+            padding: 20px;
+            border-radius: 15px;
+        }
+
+        .positive-feedback {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+        }
+
+        .improvement-areas {
+            background: linear-gradient(135deg, #FF9800, #F57C00);
+            color: white;
+        }
+
+        .statistics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .stat-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            border-top: 4px solid #667eea;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+        }
+
+        .footer {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .github-link {
+            display: inline-block;
+            background: #2c3e50;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+        }
+
+        .github-link:hover {
+            background: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .team-info {
+                grid-template-columns: 1fr;
+            }
+            
+            .feedback-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .project-title {
+                font-size: 2rem;
+            }
+            
+            .navigation {
+                gap: 10px;
+            }
+            
+            .nav-btn {
+                padding: 8px 16px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="university-logo">
+                "Año de la recuperación y consolidación de la economía peruana"<br>
+                UNIVERSIDAD CONTINENTAL<br>
+                ESCUELA PROFESIONAL DE INGENIERÍA DE SISTEMAS E INFORMÁTICA
+            </div>
+            <h1 class="project-title">Juego Educativo de Preguntas y Respuestas</h1>
+            <div class="team-info">
+                <div class="team-members">
+                    <h3>👥 Grupo Pixies - Integrantes</h3>
+                    <div class="member">
+                        <span>Huanca Palomino Jose Yohel</span>
+                        <span><strong>100%</strong></span>
+                    </div>
+                    <div class="member">
+                        <span>Paiva Paredes Hirving Rodrigo</span>
+                        <span><strong>100%</strong></span>
+                    </div>
+                    <div class="member">
+                        <span>Huacho Criollo Grimaldo</span>
+                        <span><strong>100%</strong></span>
+                    </div>
+                    <div class="member">
+                        <span>Condori Umpire Aldair Fabricio</span>
+                        <span><strong>100%</strong></span>
+                    </div>
+                    <div class="member">
+                        <span>Huaman Sequeiros Jhonatan David</span>
+                        <span><strong>30%</strong></span>
+                    </div>
+                </div>
+                <div class="course-info">
+                    <h3>📚 Información del Curso</h3>
+                    <div class="course-detail"><strong>Asignatura:</strong> Construcción De Software</div>
+                    <div class="course-detail"><strong>NRC:</strong> 59116</div>
+                    <div class="course-detail"><strong>Docente:</strong> Espetia Huamanga Hugo</div>
+                    <div class="course-detail"><strong>Ubicación:</strong> Cusco - Perú</div>
+                    <div class="course-detail"><strong>Año:</strong> 2025</div>
+                </div>
+            </div>
+        </header>
+
+        <nav class="navigation">
+            <button class="nav-btn active" onclick="showSection('introduccion')">Introducción</button>
+            <button class="nav-btn" onclick="showSection('empatizar')">Empatizar & Definir</button>
+            <button class="nav-btn" onclick="showSection('idear')">Idear</button>
+            <button class="nav-btn" onclick="showSection('prototipar')">Prototipar</button>
+            <button class="nav-btn" onclick="showSection('testeo')">Testeo</button>
+            <button class="nav-btn" onclick="showSection('conclusiones')">Conclusiones</button>
+        </nav>
+
+        <main>
+            <section id="introduccion" class="content-section active">
+                <h2 class="section-title">🎯 Introducción</h2>
+                <p style="font-size: 1.1rem; line-height: 1.8; text-align: justify;">
+                    Este documento presenta el desarrollo de un <strong>"Juego Educativo de Preguntas y Respuestas"</strong> para la asignatura de Construcción de Software. El objetivo principal es la creación de un prototipo funcional basado en la metodología de Design Thinking.
+                </p>
+                <p style="font-size: 1.1rem; line-height: 1.8; text-align: justify; margin-top: 20px;">
+                    A través de este proceso, se busca no solo implementar una solución de software, sino también comprender y aplicar los conceptos de <strong>empatía</strong>, <strong>ideación</strong> y <strong>prototipado</strong> para resolver un problema identificado en la educación.
+                </p>
+                
+                <div class="statistics">
+                    <div class="stat-card">
+                        <span class="stat-number">4</span>
+                        <div>Etapas de Design Thinking</div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">10</span>
+                        <div>Usuarios Testeados</div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">12</span>
+                        <div>Ideas Generadas</div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">6</span>
+                        <div>Funcionalidades Principales</div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="empatizar" class="content-section">
+                <h2 class="section-title">🤝 Primera Etapa: Empatizar y Definir</h2>
+                
+                <div class="subsection">
+                    <h3>🔍 Problema Identificado</h3>
+                    <p>En la actualidad vivimos en la era de la información, en la que los avances tecnológicos han transformado la forma de mostrar y compartir el conocimiento. Sin embargo, surge una pregunta clave: <strong>¿cómo medir la información realmente captada por los estudiantes de distintos niveles?</strong></p>
+                    <div class="selected-idea">
+                        <strong>Solución Propuesta:</strong> Gamificación como estrategia para evaluar el aprendizaje de manera dinámica e interactiva, identificando tanto aciertos como falencias de los usuarios.
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3>👤 Perfil del Usuario</h3>
+                    <div class="feature">
+                        <h4>Usuario Principal</h4>
+                        <p><strong>Estudiantes de nivel secundario y universitario</strong> que necesitan una herramienta para reforzar sus conocimientos en diversas materias.</p>
+                        <ul style="margin-top: 10px; padding-left: 20px;">
+                            <li>Valoran la inmediatez</li>
+                            <li>Necesitan retroalimentación instantánea</li>
+                            <li>Prefieren interfaces sencillas</li>
+                            <li>Tienen acceso a dispositivos informáticos</li>
+                            <li>Familiaridad con software educativo</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3>📊 Evidencia de Investigación</h3>
+                    <p>La investigación se basó en la observación y análisis de las dificultades que enfrentan los estudiantes para memorizar y comprender conceptos. Los hallazgos revelaron que:</p>
+                    <div class="statistics">
+                        <div class="stat-card">
+                            <span class="stat-number">↑</span>
+                            <div>La gamificación aumenta significativamente la participación</div>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number">🧠</span>
+                            <div>Mejora la retención de información</div>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number">✓</span>
+                            <div>Solución viable y efectiva</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="idear" class="content-section">
+                <h2 class="section-title">💡 Segunda Etapa: Idear</h2>
+                
+                <div class="subsection">
+                    <h3>🌟 Proceso de Lluvia de Ideas</h3>
+                    <p>Se llevó a cabo una sesión de lluvia de ideas para generar múltiples soluciones a problemas cotidianos y educativos:</p>
+                    <div class="ideas-grid">
+                        <div class="idea-item">💰 Gestión de gastos personales para estudiantes</div>
+                        <div class="idea-item">📅 Organizador de estudio con recordatorios</div>
+                        <div class="idea-item">📖 Generador de historias interactivas</div>
+                        <div class="idea-item">🌱 Calculadora de huella de carbono personal</div>
+                        <div class="idea-item">💪 Generador de rutinas de ejercicio</div>
+                        <div class="idea-item">⏰ Asistente de productividad estilo "Pomodoro"</div>
+                        <div class="idea-item">🌿 Simulador de un ecosistema</div>
+                        <div class="idea-item">🎵 Maestro de ritmos musicales con texto</div>
+                        <div class="idea-item">⚖️ Simulador de decisiones éticas</div>
+                        <div class="idea-item">😴 Analizador de sueños</div>
+                        <div class="idea-item">🏝️ Simulador de supervivencia en una isla</div>
+                        <div class="idea-item" style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; font-weight: bold;">🎮 Juego Educativo de Preguntas y Respuestas</div>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3>🎯 Idea Seleccionada y Justificación</h3>
+                    <div class="selected-idea">
+                        <h4>🏆 Juego Educativo de Preguntas y Respuestas</h4>
+                        <p>Seleccionada por ser la que mejor se ajusta a los requerimientos del proyecto.</p>
+                    </div>
+                    
+                    <div class="justification-pillars">
+                        <div class="pillar">
+                            <h4>🎯 Impacto Educativo</h4>
+                            <p>Fomenta el aprendizaje activo y la retención de conocimientos a través de la repetición y retroalimentación instantánea.</p>
+                        </div>
+                        <div class="pillar">
+                            <h4>⚙️ Viabilidad Técnica</h4>
+                            <p>Permite la implementación de un prototipo funcional en tiempo razonable, utilizando conceptos de programación.</p>
+                        </div>
+                        <div class="pillar">
+                            <h4>📈 Escalabilidad</h4>
+                            <p>El diseño modular facilita la adición de nuevas preguntas, categorías y funcionalidades como exportación JSON y CSV.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="prototipar" class="content-section">
+                <h2 class="section-title">🛠️ Tercera Etapa: Prototipar</h2>
+                
+                <div class="subsection">
+                    <h3>💻 Descripción de la Solución</h3>
+                    <p>Juego de preguntas y respuestas en entorno de consola, con menú interactivo que permite al usuario gestionar la experiencia de juego.</p>
+                    
+                    <div class="features-grid">
+                        <div class="feature">
+                            <h4>⚡ Jugar (modo rápido)</h4>
+                            <p>Inicia una ronda de preguntas predefinida</p>
+                        </div>
+                        <div class="feature">
+                            <h4>🎛️ Jugar (personalizado)</h4>
+                            <p>Permite elegir número de preguntas</p>
+                        </div>
+                        <div class="feature">
+                            <h4>➕ Añadir pregunta</h4>
+                            <p>Facilita la expansión del contenido</p>
+                        </div>
+                        <div class="feature">
+                            <h4>📋 Listar preguntas</h4>
+                            <p>Muestra el banco de preguntas actual</p>
+                        </div>
+                        <div class="feature">
+                            <h4>📤 Exportar JSON</h4>
+                            <p>Guarda preguntas en formato estándar</p>
+                        </div>
+                        <div class="feature">
+                            <h4>📊 Exportar CSV</h4>
+                            <p>Almacena historial para análisis</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3>🏗️ Características Técnicas</h3>
+                    <div class="tech-specs">
+                        <div style="margin-bottom: 20px;">
+                            <h4>📐 Estructuras de Control</h4>
+                            <p>Uso de condicionales (if/else) y bucles (for, while) para manejar preguntas, respuestas y niveles.</p>
+                        </div>
+                        
+                        <div style="margin-bottom: 20px;">
+                            <h4>🧩 Modularidad</h4>
+                            <p>Código dividido en varios archivos:</p>
+                            <ul style="padding-left: 20px; margin-top: 10px;">
+                                <li><code>models.py</code> - Modelos de datos</li>
+                                <li><code>utils.py</code> - Utilidades y funciones auxiliares</li>
+                                <li><code>main.py</code> - Lógica principal del juego</li>
+                            </ul>
+                        </div>
+                        
+                        <div>
+                            <h4>🎭 Programación Orientada a Objetos</h4>
+                            <p><strong>Clase Pregunta:</strong> Define enunciado, opciones y respuesta correcta</p>
+                            <p><strong>Clase Juego:</strong> Administra categorías, niveles (easy, medium, hard), historial y puntajes</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3>🛠️ Herramientas Utilizadas</h3>
+                    <div class="tools-list">
+                        <span class="tool-tag">VS Code + GitHub Copilot</span>
+                        <span class="tool-tag">Replit</span>
+                        <span class="tool-tag">Tabnine</span>
+                        <span class="tool-tag">Python</span>
+                        <span class="tool-tag">JSON/CSV Export</span>
+                    </div>
+                    <p style="margin-top: 15px;">Editores con soporte de IA para generar clases, estructuras de control, pruebas en línea y completado automático de código.</p>
+                </div>
+            </section>
+
+            <section id="testeo" class="content-section">
+                <h2 class="section-title">🧪 Cuarta Etapa: Testeo</h2>
+                
+                <div class="subsection">
+                    <h3>👥 Proceso de Pruebas con Usuarios</h3>
+                    <div class="statistics">
+                        <div class="stat-card">
+                            <span class="stat-number">10</span>
+                            <div>Estudiantes participantes</div>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number">🏫</span>
+                            <div>Aula de informática controlada</div>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number">5+</span>
+                            <div>Preguntas mínimas por usuario</div>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number">3</span>
+                            <div>Métodos de recopilación</div>
+                        </div>
+                    </div>
+                    
+                    <p style="margin-top: 20px;"><strong>Metodología:</strong> Selección diversa de participantes con diferentes habilidades tecnológicas, desde principiantes hasta intermedios. Cada participante siguió un protocolo específico de prueba con observación directa y cuestionarios post-prueba.</p>
+                </div>
+
+                <div class="subsection">
+                    <h3>📋 Retroalimentación Recibida</h3>
+                    <div class="feedback-section">
+                        <div class="positive-feedback">
+                            <h4>✅ Puntos Positivos</h4>
+                            <ul style="margin-top: 15px; padding-left: 20px;">
+                                <li><strong>100%</strong> entendió el objetivo inmediatamente</li>
+                                <li><strong>8 de 10</strong> comentaron diseño "bonito" y "fácil de ver"</li>
+                                <li><strong>Todos</strong> valoraron la retroalimentación instantánea</li>
+                                <li>Indicadores visuales (verde/rojo) muy efectivos</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="improvement-areas">
+                            <h4>⚠️ Áreas de Mejora</h4>
+                            <ul style="margin-top: 15px; padding-left: 20px;">
+                                <li><strong>3 usuarios:</strong> Confusión en navegación al reiniciar</li>
+                                <li><strong>Varios:</strong> "Un poco aburrido" - falta estímulo</li>
+                                <li><strong>Algunos:</strong> Ambigüedad en cálculo de puntaje</li>
+                                <li><strong>2 usuarios:</strong> Texto pequeño en pantallas menores</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3>🔧 Mejoras Sugeridas</h3>
+                    <div class="ideas-grid">
+                        <div class="idea-item">🔊 Añadir sonidos y efectos</div>
+                        <div class="idea-item">🎬 Incluir animaciones</div>
+                        <div class="idea-item">⏱️ Contador de tiempo</div>
+                        <div class="idea-item">🎯 Clarificar sistema de puntaje</div>
+                        <div class="idea-item">📱 Mejorar responsividad</div>
+                        <div class="idea-item">🔄 Simplificar navegación</div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="conclusiones" class="content-section">
+                <h2 class="section-title">🎯 Conclusiones y Referencias</h2>
+                
+                <div class="subsection">
+                    <h3>📈 Logros del Proyecto</h3>
+                    <div class="statistics">
+                        <div class="stat-card" style="border-top-color: #4CAF50;">
+                            <span class="stat-number">✓</span>
+                            <div>Metodología Design Thinking aplicada exitosamente</div>
+                        </div>
+                        <div class="stat-card" style="border-top-color: #2196F3;">
+                            <span class="stat-number">🎮</span>
+                            <div>Prototipo funcional desarrollado</div>
+                        </div>
+                        <div class="stat-card" style="border-top-color: #FF9800;">
+                            <span class="stat-number">👥</span>
+                            <div>Validación con usuarios reales</div>
+                        </div>
+                        <div class="stat-card" style="border-top-color: #9C27B0;">
+                            <span class="stat-number">📊</span>
+                            <div>Retroalimentación valiosa obtenida</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3>🔮 Perspectivas Futuras</h3>
+                    <div class="features-grid">
+                        <div class="feature">
+                            <h4>🎨 Mejoras de UX/UI</h4>
+                            <p>Implementar animaciones, sonidos y efectos visuales para mayor engagement</p>
+                        </div>
+                        <div class="feature">
+                            <h4>📱 Responsividad</h4>
+                            <p>Optimizar para diferentes tamaños de pantalla y dispositivos móviles</p>
+                        </div>
+                        <div class="feature">
+                            <h4>🎯 Gamificación Avanzada</h4>
+                            <p>Sistema de puntajes más claro, niveles de dificultad y logros</p>
+                        </div>
+                        <div class="feature">
+                            <h4>🌐 Escalabilidad</h4>
+                            <p>Base de datos robusta y funcionalidades colaborativas</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3>📚 Referencias</h3>
+                    <div class="tech-specs" style="background: #f8f9fa; color: #333;">
+                        <ul style="padding-left: 20px; line-height: 1.8;">
+                            <li><strong>Microsoft Word</strong> - Llibre_Contreras_Gamificacion2.docx</li>
+                            <li><strong>Programación en Python I:</strong> Entorno de Programación – Sintaxis – Estructuras - Celeste Guagliano - Google Libros</li>
+                            <li><strong>Design Thinking</strong> - Metodología aplicada en el desarrollo del proyecto</li>
+                            <li><strong>Gamificación Educativa</strong> - Fundamentos teóricos y aplicaciones prácticas</li>
+                        </ul>
+                    </div>
+                </div>
+
+    <script>
+        function showSection(sectionId) {
+            // Ocultar todas las secciones
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Remover clase active de todos los botones
+            const buttons = document.querySelectorAll('.nav-btn');
+            buttons.forEach(button => {
+                button.classList.remove('active');
+            });
+            
+            // Mostrar la sección seleccionada
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Agregar clase active al botón correspondiente
+            event.target.classList.add('active');
+            
+            // Scroll suave hacia arriba
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // Efecto de parallax suave para el fondo
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const rate = scrolled * -0.5;
+            document.body.style.backgroundPosition = `center ${rate}px`;
+        });
+
+        // Animación de entrada para las estadísticas
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeIn 0.6s ease-out forwards';
+                }
+            });
+        }, observerOptions);
+
+        // Observar todas las tarjetas de estadísticas
+        document.addEventListener('DOMContentLoaded', () => {
+            const statCards = document.querySelectorAll('.stat-card, .feature, .idea-item');
+            statCards.forEach(card => {
+                observer.observe(card);
+            });
+        });
+
+        // Efecto hover mejorado para las tarjetas
+        document.querySelectorAll('.idea-item, .feature, .stat-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px) scale(1.02)';
+                this.style.boxShadow = '0 10px 25px rgba(0,0,0,0.15)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+                this.style.boxShadow = '0 5px 15px rgba(0,0,0,0.1)';
+            });
+        });
+    </script>
+</body>
+</html>
